@@ -1,4 +1,4 @@
-# Geant4 Examples for Tutorials 2022
+# Geant4 Examples for Tutorials 2024
 
 Copyright &copy; 2024 KEK, the High Energy Accelerator Research Organization
 
