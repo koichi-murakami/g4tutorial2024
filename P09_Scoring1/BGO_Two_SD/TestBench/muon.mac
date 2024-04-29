@@ -1,0 +1,15 @@
+#
+
+/run/initialize
+/tracking/verbose 0
+#/run/verbose 0
+#/vis/disable
+/gun/particle mu-
+/gun/position 0. 0. -15. cm
+/gun/direction 0. 0. 1.
+/gun/energy 100 MeV
+
+#/vis/disable
+
+/run/beamOn 1
+

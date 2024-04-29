@@ -1,0 +1,113 @@
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// SensitiveVolume.cc
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#include "SensitiveVolume.hh"
+#include "SimData.hh"
+
+#include <vector>
+
+#include "G4TouchableHistory.hh"
+#include "G4Track.hh"
+#include "G4Step.hh"
+#include "G4ParticleDefinition.hh"
+#include "G4HCofThisEvent.hh"
+#include "G4RunManager.hh"
+
+//-------------------------------------------------------------------------
+  SensitiveVolume::SensitiveVolume(G4String name)
+  : G4VSensitiveDetector(name) , simdata{nullptr}
+{}
+//------------------------------------------------------------------------
+  SensitiveVolume::~SensitiveVolume()
+{}
+//-------------------------------------------------------------------------
+  void SensitiveVolume::Initialize(G4HCofThisEvent*)
+{
+    fEdep = 0.;
+    nStep = 0;
+}
+//-------------------------------------------------------------------------
+  void SensitiveVolume::EndOfEvent(G4HCofThisEvent*)
+{
+   simdata[0].Fill( fEdep, nStep, position_Worldx , position_Worldy  );
+   G4cout << ">>>>>  EnfOfEvent fEdep = "<< fEdep << G4endl;
+}
+//-------------------------------------------------------------------------
+  G4bool SensitiveVolume::ProcessHits(G4Step* aStep, G4TouchableHistory*)
+{
+  G4cout << "=== SenstiveVolume-ProcessHits: Output of Information ===" << G4endl;
+  
+// Retrieve information from the track object
+   G4int idTrack = aStep->GetTrack()->GetTrackID();
+           nStep  = aStep->GetTrack()->GetCurrentStepNumber();
+   G4String particleName = aStep->GetTrack()->GetDefinition()->GetParticleName();
+
+if(aStep->GetTrack()->GetTrackStatus()!=fAlive) return false;
+// Primary track is picked up
+    if (idTrack != 1) return false;
+
+// energy deposit in this step and its accumulation over steps
+    G4double edep = aStep->GetTotalEnergyDeposit();
+    fEdep = fEdep + edep;
+
+
+
+
+   G4cout << "  Track ID=: " << idTrack <<  "  Step  Number: " << nStep 
+               << "  Particle: " << particleName << G4endl;
+
+// Get PreStepPoint and TouchableHandle objects
+   G4StepPoint* preStepPoint=aStep->GetPreStepPoint();
+   G4StepPoint* postStepPoint=aStep->GetPostStepPoint();
+
+   G4TouchableHandle theTouchable = preStepPoint->GetTouchableHandle();
+  
+
+ // G4ThreeVector position_Local = theTouchable->GetHistory()
+ //                                 -> GetTopTransform().TransformPoint(position_World);
+
+// Touchable information: Volume name and copy# at the current step
+  G4String volumeName = theTouchable->GetVolume()->GetName();
+  G4int copyNo = theTouchable->GetCopyNumber();
+G4int replicaNo = theTouchable->GetReplicaNumber();
+
+  G4String volumeName_1 = theTouchable->GetVolume(1)->GetName();
+  G4int copyNo_1 = theTouchable->GetCopyNumber(1);
+G4int replicaNo_1 = theTouchable->GetReplicaNumber(1);
+
+  G4String volumeName_2 = theTouchable->GetVolume(2)->GetName();
+  G4int copyNo_2 = theTouchable->GetCopyNumber(2);
+G4int replicaNo_2 = theTouchable->GetReplicaNumber(2);
+
+ // next lines for debug only
+  G4cout << " ******  Geometry ******************"<< G4endl;
+  G4cout << "  Volume = " << volumeName 
+              << " , CopyNo = "   << copyNo 
+              << " , replicaNo = " << replicaNo
+             << " :: Mother Volume = " << volumeName_1
+             << " ,  her CopyNo= " << copyNo_1 
+              <<", her replica No = " << replicaNo_1
+             
+             << " :: Grand Mother Volume = " << volumeName_2
+             << " ,  her CopyNo= " << copyNo_2 
+             << " . her replicaNo =  " << replicaNo_2
+             <<G4endl;
+
+// a primary track exit coordinates
+    if ( postStepPoint->GetStepStatus() != fGeomBoundary) return false;
+     G4ThreeVector position_World = postStepPoint->GetPosition();
+      position_Worldx = position_World.x() ;
+      position_Worldy = position_World.y() ;
+
+   G4cout << "####### exit point  x,y ####" <<G4endl;   
+   G4cout  << "  x = " << position_Worldx << "  ,   y = " << position_Worldy 
+        <<  "  , nStep " << nStep << G4endl;
+   
+  return true;
+}
+
+
+
+
+
+

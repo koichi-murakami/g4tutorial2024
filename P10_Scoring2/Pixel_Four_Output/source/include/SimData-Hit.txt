@@ -1,0 +1,45 @@
+
+//  SimData.hh   Serial version
+
+#ifndef SimData_h
+#define SimData_h 1
+
+#include "globals.hh"
+#include <vector>
+#include <tuple>
+
+
+using Hit = std::tuple<G4int, G4int, G4double, G4double, G4double, G4double>;
+class SimData
+{
+
+
+public :
+	SimData() = default;
+	~SimData() = default;
+
+	SimData( const SimData& ) = delete;
+	void operator = (const SimData& ) = delete;
+	
+	void Fill (G4int event,  G4int replica, G4double x, G4double y, G4double z,G4double t ) ;	
+      void Initialize();
+	const std::vector<Hit>& GetRecord() const;
+
+private :
+	std::vector<Hit> Record ;	
+};
+
+inline void SimData::Fill(G4int event, G4int replica, G4double x, G4double y, G4double z,G4double t) 
+	{
+        Record.emplace_back(event, replica, x, y, z, t);	
+	}	
+inline void SimData::Initialize()
+	{
+	  Record.clear();
+	}
+inline const std::vector<Hit>& SimData::GetRecord() const
+	{	
+	  return Record ;
+	}
+
+#endif

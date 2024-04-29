@@ -1,0 +1,30 @@
+# define scoring mesh "boxMesh_1"
+#
+/score/create/boxMesh boxMesh_1
+# its size half lengths and number of bins in x, y and z
+/score/mesh/boxSize 15. 15. 15. cm
+/score/mesh/nBin 1 1 300
+#scores  given name "eDep" and "dDep"
+/score/quantity/energyDeposit eDep
+/score/quantity/doseDeposit dDep
+
+/score/close
+/score/list
+# verbosity
+/control/verbose 2
+/run/verbose 1
+/tracking/verbose 0
+/vis/disable
+
+## particle
+/gun/particle proton
+/gun/position 0. 0. -15. cm
+/gun/direction 0. 0. 1.
+/gun/energy 200 MeV
+
+/run/beamOn 2000
+
+# Dump scorers to a file
+/score/dumpQuantityToFile boxMesh_1 dDep proton-dDep.csv
+/score/dumpQuantityToFile boxMesh_1 eDep proton-eDep.csv
+
