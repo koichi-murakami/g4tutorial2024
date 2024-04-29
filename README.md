@@ -6,8 +6,7 @@ Copyright &copy; 2024 KEK, the High Energy Accelerator Research Organization
 [![g4tut](https://img.shields.io/badge/g4tut-202406.-orange.svg)](https://wiki.kek.jp/display/geant4)
 
 
-
-Geant4 example code for tutorials
+Geant4 example codes for tutorial
 
 * [2024.06](https://wiki.kek.jp/x/owgmFg) (v11.1.2)
 
