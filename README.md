@@ -1,6 +1,6 @@
 # Geant4 Examples for Tutorials 2022
 
-Copyright &copy; 2022 KEK, the High Energy Accelerator Research Organization
+Copyright &copy; 2024 KEK, the High Energy Accelerator Research Organization
 
 [![geant4](https://img.shields.io/badge/geant4-11.1-blue.svg)](http://www.geant4.org/)
 [![g4tut](https://img.shields.io/badge/g4tut-202406.-orange.svg)](https://wiki.kek.jp/display/geant4)
