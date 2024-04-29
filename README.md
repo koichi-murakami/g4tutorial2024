@@ -8,7 +8,7 @@ Copyright &copy; 2024 KEK, the High Energy Accelerator Research Organization
 
 Geant4 example codes for tutorial
 
-* [2024.06](https://wiki.kek.jp/x/owgmFg) (v11.1.2)
+* [2024.06](https://wiki.kek.jp/x/owgmFg) (v11.2)
 
 ## License
 BSD 2-Clause License
